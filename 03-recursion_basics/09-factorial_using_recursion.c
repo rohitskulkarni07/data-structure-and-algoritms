@@ -11,6 +11,9 @@ int main(void)
     scanf("%llu", &N);
     unsigned long long int result = fact(N);
     printf("%llu\n", result);
+
+    return (0);
+
 }
 
 unsigned long long int fact(unsigned long long int N)
