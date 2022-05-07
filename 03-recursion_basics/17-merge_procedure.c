@@ -7,8 +7,8 @@
 /*allocate and input array*/
 int *allocate_and_input_array(int *p_size);
 
-/*zip array*/
-void zip(int *arr, int size);
+/*merge array*/
+void merge(int *arr, int p, int q, int r);
 
 /*print array*/
 void print_array(int *arr, int N);
@@ -24,12 +24,12 @@ int main(void)
 
     p_arr = allocate_and_input_array(&N);
 
-    printf("Complete Array Before Zip: \n");
+    printf("Complete Array Before merge: \n");
     print_array(p_arr, N);
 
-    zip(p_arr, N);
+    // sort function call here
 
-    printf("Complete Array After Zip: \n");
+    printf("Complete Array After merge: \n");
     print_array(p_arr, N);
 
     release_array(&p_arr);
@@ -44,6 +44,7 @@ int *allocate_and_input_array(int *p_size)
     int *p_arr = NULL;
     int N = 0;
     int i = 0;
+    int mid = 0;
 
     printf("Enter the size of the array: ");
     scanf("%d", p_size);
@@ -53,88 +54,75 @@ int *allocate_and_input_array(int *p_size)
     p_arr = (int *)malloc(sizeof(int) * N);
     assert(p_arr != NULL);
 
-    for (i = 0; i < N; ++i)
+    mid = N / 2;
+
+    for (i = 0; i <= mid; ++i)
     {
         p_arr[i] = (i + 1) * 10;
+    }
+    for (i = mid + 1; i < N; ++i)
+    {
+        p_arr[i] = (i + 1) * 5;
     }
 
     return p_arr;
 }
 
-/*divide  array into 2and zip the array*/
-void zip(int *p_arr, int size)
+/*divide array into 2 and merge*/
+void merge(int *p_arr, int p, int q, int r)
 {
-
     int *pa1 = NULL;
-    int N1 = 0;
-
     int *pa2 = NULL;
-    int N2 = 0;
 
-    int mid = size / 2;
-    int i = 0, j = 0, k = 0;
+    int N1;
+    int N2;
 
-    // size = 10 , mid = 5, n1 = 6, n2 = 4;
-    N1 = mid + 1;
-    N2 = size - mid - 1;
+    int i, j, k;
+    int cnt;
 
-    assert(!(N1 <= 0 && N2 < 0));
+    N1 = q-p+1;
+    N2 = r-q;
 
-    pa1 = (int *)malloc(sizeof(int) * N1);
+    pa1 = (int *) malloc(N1 * sizeof(int));
     assert(pa1 != NULL);
-
-    pa2 = (int *)malloc(sizeof(int) * N2);
+    
+    pa2 = (int *) malloc(N2 * sizeof(int));
     assert(pa2 != NULL);
-
-    for (i = 0; i < N1; ++i)
-    {
-        pa1[i] = p_arr[i];
-    }
-    for (i = 0; i < N2; ++i)
-    {
-        pa2[i] = p_arr[mid + 1 + i];
-    }
-    printf("Array 1: \n");
-    print_array(pa1, N1);
-
-    printf("Array 2: \n");
-    print_array(pa2, N2);
 
     i = 0;
     j = 0;
     k = 0;
 
-    while (TRUE)
+    while(TRUE)
     {
-        if (k % 2 == 0)
+        if (pa1[i] <= pa2[j])
         {
-            p_arr[k] = pa1[i];
+            p_arr[k + p] = pa1[i];
             i += 1;
             k += 1;
-
             if (i == N1)
             {
                 while (j < N2)
                 {
-                    p_arr[k] = pa2[j];
-                    j += 1;
-                    k += 1;
+                    p_arr[k + p] = pa2[j];
+                    j+=1;
+                    k+=1;
                 }
                 break;
             }
         }
         else
         {
-            p_arr[k] = pa2[j];
+            p_arr[k + p] = pa2[j];
             j += 1;
-            k += 1;
+            j += 1;
 
             if (j == N2)
             {
 
-                while (i < N1)
+                while (j < N2)
                 {
-                    p_arr[k] = pa1[i];
+                    p_arr[k + p] = pa1[i];
                     i += 1;
                     k += 1;
                 }
@@ -142,7 +130,7 @@ void zip(int *p_arr, int size)
             }
         }
     }
-
+    
     free(pa1);
     pa1 = NULL;
 

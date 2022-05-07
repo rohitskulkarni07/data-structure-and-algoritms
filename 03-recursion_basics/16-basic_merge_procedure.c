@@ -7,8 +7,8 @@
 /*allocate and input array*/
 int *allocate_and_input_array(int *p_size);
 
-/*zip array*/
-void zip(int *arr, int size);
+/*merge array*/
+void merge(int *arr, int size);
 
 /*print array*/
 void print_array(int *arr, int N);
@@ -24,12 +24,12 @@ int main(void)
 
     p_arr = allocate_and_input_array(&N);
 
-    printf("Complete Array Before Zip: \n");
+    printf("Complete Array Before merge: \n");
     print_array(p_arr, N);
 
-    zip(p_arr, N);
+    merge(p_arr, N);
 
-    printf("Complete Array After Zip: \n");
+    printf("Complete Array After merge: \n");
     print_array(p_arr, N);
 
     release_array(&p_arr);
@@ -44,6 +44,7 @@ int *allocate_and_input_array(int *p_size)
     int *p_arr = NULL;
     int N = 0;
     int i = 0;
+    int mid = 0;
 
     printf("Enter the size of the array: ");
     scanf("%d", p_size);
@@ -53,16 +54,22 @@ int *allocate_and_input_array(int *p_size)
     p_arr = (int *)malloc(sizeof(int) * N);
     assert(p_arr != NULL);
 
-    for (i = 0; i < N; ++i)
+    mid = N / 2;
+
+    for (i = 0; i <= mid; ++i)
     {
         p_arr[i] = (i + 1) * 10;
+    }
+    for (i = mid + 1; i < N; ++i)
+    {
+        p_arr[i] = (i + 1) * 5;
     }
 
     return p_arr;
 }
 
-/*divide  array into 2and zip the array*/
-void zip(int *p_arr, int size)
+/*divide  array into 2and merge the array*/
+void merge(int *p_arr, int size)
 {
 
     int *pa1 = NULL;
@@ -78,7 +85,7 @@ void zip(int *p_arr, int size)
     N1 = mid + 1;
     N2 = size - mid - 1;
 
-    assert(!(N1 <= 0 && N2 < 0));
+    assert(!(N1 <= 0 && N2 <= 0));
 
     pa1 = (int *)malloc(sizeof(int) * N1);
     assert(pa1 != NULL);
@@ -106,7 +113,7 @@ void zip(int *p_arr, int size)
 
     while (TRUE)
     {
-        if (k % 2 == 0)
+        if (pa1[i] < pa2[j])
         {
             p_arr[k] = pa1[i];
             i += 1;
