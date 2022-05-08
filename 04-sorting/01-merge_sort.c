@@ -1,3 +1,11 @@
+/**
+ * @file merge_sort.c
+ * @author rohit kulkarni
+ * @brief this sorting framework just call your respective sort functions inside sort function()
+ * here merge sort is used
+ * @date 2022-05-09
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
