@@ -2,7 +2,7 @@
  * @file sorting_framework.c
  * @author rohit kulkarni
  * @brief this sorting framework just call your respective sort functions inside sort function()
- *
+ * here quick sort is used
  * @date 2022-05-09
  */
 #include <stdio.h>
@@ -14,9 +14,12 @@ void input(int *p_arr, int N);
 void output(int *p_arr, int N);
 void sort(int *p_arr, int N);
 
+void quick_sort(int *arr, int p, int r);
+int partition(int *arr, int p, int r);
+
 int main(int argc, char *argv[])
 {
-   time_t start_time, end_time;
+    time_t start_time, end_time;
     double diff_t = 0.0;
 
     if (argc != 2)
@@ -86,5 +89,58 @@ void output(int *p_arr, int N)
  */
 void sort(int *p_arr, int N)
 {
-    
+    quick_sort(p_arr, 0, N - 1);
+}
+
+/**
+ * @brief recursive function which returns the sorted array if give unsorted array
+ *
+ * @param arr un-sorted array
+ * @param p starting index
+ * @param r ending index
+ */
+void quick_sort(int *arr, int p, int r)
+{
+
+    int q;
+
+    if (p < r)
+    {
+        q = partition(arr, p, r);
+        quick_sort(arr, p, q - 1);
+        quick_sort(arr, q + 1, r);
+    }
+}
+/**
+ * @brief partition the array in such way it pivot should be at correct possition
+ * where a[p ... i] are less than pivot and [i+1...r] are greater than pivot
+ *
+ * @param arr unsorted array
+ * @param p starting index
+ * @param r ending index
+ * @return int position of pivot after sorting
+ */
+int partition(int *arr, int p, int r)
+{
+    int pivot;
+    int i, j, temp;
+
+    pivot = arr[r];
+    i = p - 1;
+    for (j = p; j < r; ++j)
+    {
+        if (arr[j] <= pivot)
+        {
+            i = i + 1;
+            temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+
+    temp = arr[i + 1];
+    arr[i + 1] = pivot;
+    arr[r] = temp;
+
+    return (i + 1);
 }
