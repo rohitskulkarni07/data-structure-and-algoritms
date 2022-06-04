@@ -1,0 +1,80 @@
+
+Linked_List: Data Type.  
+It's Container Type. 
+Let contained type be int. 
+
+A client would like to have a function 
+
+1) to create a new list of integer 
+
+2) to add an integer at the starting position of the list. 
+
+3) to add an integer at the last position of the list. 
+
+4) to add an integer after existing integer. 
+
+5) to add an integer before existing integer. 
+
+6) to get an integer at the starting position without removing it 
+    
+7) to get an integer at the ending position without removing it 
+
+8) to get an integer at the starting position removing it (pop)
+
+9) to get an integer at the ending position removing it
+
+10) remove the integer at the starting position 
+
+11) remove the integer at the ending position 
+
+12) remove the first occurrence of integer of given value. 
+
+13) query if list is empty 
+
+14) query the current length of the list 
+
+15) query whether an integer of given value is a part of the list 
+
+16) show(display) the list 
+
+17) destroy the list 
+
+// inter-list 
+18) join/concat two lists 
+    mutable verion 
+    immutable version 
+
+19) Merge two sorted lists 
+    (immutable)
+
+20) reverse the list 
+    mutable version 
+    immutable version 
+
+/*  
+    Practive routines 
+    precondition: start <= end 
+    intervale type 
+    #define INTERVAL_CLOSED             1   //start <= n <= end 
+    #define INTERVAL_OPEN               2   //start < n < end 
+    #define INTERVAL_SEMI_OPEN_LEFT     3   //start < n <= end 
+    #define INTERVAL_SEMI_OPEN_RIGHT    4   //start <= n < end
+    status_t remove_range(list_t* p_list, data_t start, data_t end, int interval_type); 
+*/ 
+
+/* 
+    union of two lists 
+*/ 
+////////////////////////////////////////////
+
+int hint; 
+#define ANY 1 
+#define SLL 2 
+#define DLL 3 
+#define SCLL 4 
+#define DCLL 5 
+
+IList* pIList = IList::get_list(ANY); 
+
+pIList->insert_start(10); 
+////////////////////////////////////////////
