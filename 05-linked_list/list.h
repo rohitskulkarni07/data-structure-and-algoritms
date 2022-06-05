@@ -20,6 +20,7 @@
 typedef int data_t;
 typedef int status_t;
 typedef int len_t;
+typedef int bool;
 
 typedef struct node node_t;
 typedef node_t list_t;
@@ -85,7 +86,7 @@ status_t insert_after(list_t *p_list, data_t e_data, data_t new_data);
  * @param new_data new data to insert
  * @return status_t successful or failure insertion status
  */
-status_t insert_before(list_t *p_list, data_t new_data);
+status_t insert_before(list_t *p_list, data_t e_data, data_t new_data);
 
 /**
  * @brief Get the start node data from list
@@ -154,7 +155,7 @@ status_t remove_data(list_t *p_list, data_t r_data);
  * @param p_list head node of the list
  * @return true if list is empty else false if list is not empty
  */
-bool isEmpty(list_t *p_list);
+bool is_empty(list_t *p_list);
 
 /**
  * @brief Check if given data is available in list or not
@@ -197,7 +198,7 @@ status_t destroy_list(list_t **pp_list);
  * @param p_list_2 list 2 be concat with
  * @return list_t* pointer concat-ed list
  */
-list_t *concat_list_imm(list_t *p_list_1, list_t p_list_2);
+list_t *concat_list_imm(list_t *p_list_1, list_t *p_list_2);
 // void concat_list_imm(list_t* p_list_1, list_t p_list2, list_t **pp_list);
 
 /* concat mutable */
@@ -208,7 +209,7 @@ list_t *concat_list_imm(list_t *p_list_1, list_t p_list_2);
  * @param p_list_2 list 2 be concat with
  * @return list_t* pointer concat-ed list
  */
-list_t *concat_list_m(list_t *p_list_1, list_t p_list2);
+list_t *concat_list_m(list_t *p_list_1, list_t *p_list_2);
 
 /**
  * @brief Merge 2 sorted list
@@ -236,7 +237,7 @@ list_t *get_reversed_list(list_t *p_list);
  */
 status_t reverse_list(list_t *p_list);
 
-/* list auxilary functions */
+/* list auxilary routines */
 
 /**
  * @brief Search data in given list
@@ -264,7 +265,22 @@ static node_t *get_node(data_t new_data);
  */
 static void generic_insert(list_t *p_beg, list_t *p_mid, list_t *p_end);
 
+/**
+ * @brief Delete given node
+ *
+ * @param p_delete_node node to be delete
+ */
+static void generic_delete(node_t *p_delete_node);
+
 /* auxilary function */
+
+/**
+ * @brief Create memory for given number of elements of given size
+ *
+ * @param nr_elements number of elements
+ * @param size_per_element size of individual element
+ * @return void* pointer to memory space created for given element
+ */
 void *xcalloc(size_t nr_elements, size_t size_per_element);
 
 #endif
