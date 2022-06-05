@@ -214,11 +214,11 @@ list_t *concat_list_imm(list_t *p_list_1, list_t *p_list_2)
     }
 }
 
-list_t *concat_list_m(list_t *p_list_1, list_t *p_list_2)
+status_t concat_list_m(list_t *p_list_1, list_t *p_list_2)
 {
     if (!p_list_2)
     {
-        return (p_list_1);
+        return (SUCCESS);
     }
 
     p_list_1->prev->next = p_list_2->next;
@@ -227,6 +227,10 @@ list_t *concat_list_m(list_t *p_list_1, list_t *p_list_2)
     p_list_2->prev->next = p_list_1;
 
     free(p_list_2);
+    p_list_2 = NULL;
+    
+    return (SUCCESS);
+
 }
 
 /* list auxilary routines implementation */
