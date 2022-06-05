@@ -14,6 +14,7 @@
 #define SUCCESS 1
 #define TRUE 1
 #define FALSE 0
+
 #define LIST_DATA_NOT_FOUND 2
 #define LIST_EMPTY 3
 
@@ -41,8 +42,14 @@ struct node
 
 /* Interface functions */
 /**
- * @brief Create a list object
- * Create a new list of integer
+ * @brief Create a list/node object
+ * Create a new node/list like following
+ * 
+ *     +-------+-------+-------+
+ *     |  data |  prev |  next |
+ *      -------+-------+-------+
+ *     |  -1   | NULL  |  NULL |
+ *     +-------+-------+-------+ 
  *
  * @return list_t* pointer newly created node
  */
@@ -207,9 +214,9 @@ list_t *concat_list_imm(list_t *p_list_1, list_t *p_list_2);
  *
  * @param p_list_1 list 1 to be concat
  * @param p_list_2 list 2 be concat with
- * @return list_t* pointer concat-ed list
+ * @return status_t success result
  */
-list_t *concat_list_m(list_t *p_list_1, list_t *p_list_2);
+status_t concat_list_m(list_t *p_list_1, list_t *p_list_2);
 
 /**
  * @brief Merge 2 sorted list
@@ -218,7 +225,7 @@ list_t *concat_list_m(list_t *p_list_1, list_t *p_list_2);
  * @param p_list_2 list 2 be concat with
  * @return list_t newly created pointer to list
  */
-list_t merge_lists(list_t *p_list_1, list_t p_list_2);
+list_t *merge_lists(list_t *p_list_1, list_t *p_list_2);
 
 /**
  * @brief Reverse the list (immutable version)
@@ -281,6 +288,6 @@ static void generic_delete(node_t *p_delete_node);
  * @param size_per_element size of individual element
  * @return void* pointer to memory space created for given element
  */
-void *xcalloc(size_t nr_elements, size_t size_per_element);
+static void *xcalloc(size_t nr_elements, size_t size_per_element);
 
 #endif

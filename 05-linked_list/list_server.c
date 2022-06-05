@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "list.h"
 
 /* list interface routines implementation */
@@ -63,7 +64,7 @@ status_t insert_before(list_t *p_list, data_t e_data, data_t new_data)
 }
 status_t get_start(list_t *p_list, data_t *p_start_data)
 {
-    if (is_empty == TRUE)
+    if (is_empty(p_list) == TRUE)
     {
         return (LIST_EMPTY);
     }
@@ -72,7 +73,7 @@ status_t get_start(list_t *p_list, data_t *p_start_data)
 }
 status_t get_end(list_t *p_list, data_t *p_start_data)
 {
-    if (is_empty == TRUE)
+    if (is_empty(p_list) == TRUE)
     {
         return (LIST_EMPTY);
     }
@@ -82,7 +83,7 @@ status_t get_end(list_t *p_list, data_t *p_start_data)
 
 status_t pop_start(list_t *p_list, data_t *p_start_data)
 {
-    if (is_empty == TRUE)
+    if (is_empty(p_list) == TRUE)
     {
         return (LIST_EMPTY);
     }
@@ -93,7 +94,7 @@ status_t pop_start(list_t *p_list, data_t *p_start_data)
 
 status_t pop_end(list_t *p_list, data_t *p_start_data)
 {
-    if (is_empty == TRUE)
+    if (is_empty(p_list) == TRUE)
     {
         return (LIST_EMPTY);
     }
@@ -104,7 +105,7 @@ status_t pop_end(list_t *p_list, data_t *p_start_data)
 
 status_t remove_start(list_t *p_list)
 {
-    if (is_empty == TRUE)
+    if (is_empty(p_list) == TRUE)
     {
         return (LIST_EMPTY);
     }
@@ -114,7 +115,7 @@ status_t remove_start(list_t *p_list)
 
 status_t remove_end(list_t *p_list)
 {
-    if (is_empty == TRUE)
+    if (is_empty(p_list) == TRUE)
     {
         return (LIST_EMPTY);
     }
@@ -124,13 +125,13 @@ status_t remove_end(list_t *p_list)
 
 status_t remove_data(list_t *p_list, data_t r_data)
 {
-    if (is_empty == TRUE)
-    {
-        return (LIST_EMPTY);
-    }
     node_t *p_remove_node = NULL;
 
     p_remove_node = search_node(p_list, r_data);
+    if(p_remove_node == NULL) 
+    {
+        return(LIST_DATA_NOT_FOUND);
+    }
     generic_delete(p_remove_node);
     return (SUCCESS);
 }
@@ -155,11 +156,11 @@ void show(list_t *p_list, const char *msg)
         puts(msg);
     }
     printf("[START]<-->");
-    for (p_run = p_list->next; p_run != NULL; p_run = p_run->next)
+    for (p_run = p_list->next; p_run != p_list; p_run = p_run->next)
     {
         printf("[ %d ]<-->", p_run->data);
     }
-    printf("[END]");
+    puts("[END]\n");
 }
 
 status_t destroy_list(list_t **pp_list)
@@ -190,7 +191,7 @@ len_t get_length(list_t *p_list)
 {
     node_t *p_run = NULL;
     len_t len = 0;
-    for (p_run = p_list->next; p_run != NULL; p_run = p_run->next)
+    for (p_run = p_list->next; p_run != p_list; p_run = p_run->next)
     {
         len += 1;
     }
@@ -199,24 +200,25 @@ len_t get_length(list_t *p_list)
 
 list_t *concat_list_imm(list_t *p_list_1, list_t *p_list_2)
 {
-    list_t *concat_list = NULL;
+    list_t *p_concat_list = NULL;
     node_t *p_run = NULL;
-    concat_list = create_list();
+    p_concat_list = create_list();
 
     for (p_run = p_list_1->next; p_run != p_list_1; p_run = p_run->next)
     {
-        assert(insert_end(concat_list, p_run->data) == SUCCESS);
+        assert(insert_end(p_concat_list, p_run->data) == SUCCESS);
     }
 
     for (p_run = p_list_2->next; p_run != p_list_2; p_run = p_run->next)
     {
-        assert(insert_end(concat_list, p_run->data) == SUCCESS);
+        assert(insert_end(p_concat_list, p_run->data) == SUCCESS);
     }
+    return (p_concat_list);
 }
 
 status_t concat_list_m(list_t *p_list_1, list_t *p_list_2)
 {
-    if (!p_list_2)
+    if (!is_empty(p_list_2))
     {
         return (SUCCESS);
     }
@@ -228,11 +230,101 @@ status_t concat_list_m(list_t *p_list_1, list_t *p_list_2)
 
     free(p_list_2);
     p_list_2 = NULL;
-    
-    return (SUCCESS);
 
+    return (SUCCESS);
 }
 
+list_t *merge_lists(list_t *p_list_1, list_t *p_list_2)
+{
+    list_t *p_merge_list = NULL;
+    node_t *p_run_1 = NULL;
+    node_t *p_run_2 = NULL;
+
+    p_merge_list = create_list();
+    p_run_1 = p_list_1->next;
+    p_run_2 = p_list_2->next;
+
+    while (TRUE)
+    {
+        if (p_run_1 == p_list_1)
+        {
+            while (p_run_2 != p_list_2)
+            {
+                assert(insert_end(p_merge_list, p_run_2->data) == SUCCESS);
+                p_run_2 = p_run_2->next;
+            }
+            break;
+        }
+
+        if (p_run_2 == p_list_2)
+        {
+            while (p_run_1 != p_list_1)
+            {
+                assert(insert_end(p_merge_list, p_run_2->data) == SUCCESS);
+                p_run_1 = p_run_1->next;
+            }
+            break;
+        }
+
+        if (p_run_1->data <= p_run_2->data)
+        {
+            assert(insert_end(p_merge_list, p_run_1->data) == SUCCESS);
+            p_run_1 = p_run_1->next;
+        }
+        else
+        {
+            assert(insert_end(p_merge_list, p_run_2->data) == SUCCESS);
+            p_run_2 = p_run_2->next;
+        }
+    }
+
+    return (p_merge_list);
+}
+
+list_t *get_reversed_list(list_t *p_list) /* immutable version */
+{
+    list_t *p_reversed_list = NULL;
+    node_t *p_run = NULL;
+
+    p_reversed_list = create_list();
+    p_run = p_list->prev;
+
+    while (p_run != p_list)
+    {
+        assert(insert_end(p_reversed_list, p_run->data) == SUCCESS);
+        p_run = p_run->prev;
+    }
+
+    return (p_reversed_list);
+}
+
+status_t reverse_list(list_t *p_list) /* mutable version */
+{
+    node_t *p_original_prev = NULL;
+    node_t *p_current_last = NULL;
+    node_t *p_run = NULL;
+    node_t *p_run_prev = NULL;
+
+    p_original_prev = p_list->prev;
+    p_current_last = p_original_prev;
+    p_run = p_original_prev->prev;
+
+    while (p_run != p_list)
+    {
+        p_run_prev = p_run->prev;
+        p_current_last->next = p_run;
+        p_run->prev = p_current_last;
+        p_current_last = p_run;
+        p_run = p_run_prev;
+    }
+
+    p_current_last->next = p_list;
+    p_list->prev = p_current_last;
+    p_list->next = p_original_prev;
+    p_original_prev->prev = p_list;
+
+    return (SUCCESS);
+}
 /* list auxilary routines implementation */
 
 static void generic_insert(list_t *p_beg, list_t *p_mid, list_t *p_end)
@@ -289,4 +381,5 @@ static void *xcalloc(size_t nr_elements, size_t size_per_element)
         fprintf(stderr, "calloc : fatal :  out of virtual memory");
         exit(EXIT_FAILURE);
     }
+    return (p);
 }
