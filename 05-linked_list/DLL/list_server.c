@@ -13,14 +13,7 @@
 /* list interface routines implementation */
 list_t *create_list(void)
 {
-    list_t *p_list = NULL;
-    p_list = get_node(-1);
-
-    // to maintain circular property of list
-    p_list->prev = p_list;
-    p_list->next = p_list;
-
-    return (p_list);
+    return get_node(0);
 }
 
 status_t insert_start(list_t *p_list, data_t new_data)
@@ -128,9 +121,9 @@ status_t remove_data(list_t *p_list, data_t r_data)
     node_t *p_remove_node = NULL;
 
     p_remove_node = search_node(p_list, r_data);
-    if(p_remove_node == NULL) 
+    if (p_remove_node == NULL)
     {
-        return(LIST_DATA_NOT_FOUND);
+        return (LIST_DATA_NOT_FOUND);
     }
     generic_delete(p_remove_node);
     return (SUCCESS);
@@ -337,8 +330,19 @@ static void generic_insert(list_t *p_beg, list_t *p_mid, list_t *p_end)
 
 static void generic_delete(node_t *p_delete_node)
 {
-    p_delete_node->prev->next = p_delete_node->next;
-    p_delete_node->next->prev = p_delete_node->prev;
+    if (p_delete_node == NULL)
+    {
+        return;
+    }
+    if (p_delete_node->next != NULL)
+    {
+        p_delete_node->next->prev = p_delete_node->prev;
+    }
+    if (p_delete_node->prev != NULL)
+    {
+        p_delete_node->prev->next = p_delete_node->next;
+    }
+
     free(p_delete_node);
     p_delete_node = NULL;
 }
@@ -347,7 +351,7 @@ static node_t *search_node(list_t *p_list, data_t s_data)
     node_t *p_run = NULL;
 
     p_run = p_list->next;
-    while (p_run != p_list)
+    while (p_run != NULL)
     {
         /* code */
         if (p_run->data == s_data)
