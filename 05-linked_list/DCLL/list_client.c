@@ -120,13 +120,12 @@ int main(void)
     show(p_list, "Reversed after inserting 1 element in same empty list");
     assert(destroy_list(&p_list) == SUCCESS && p_list == NULL);
 
-    puts("\nTesting Inter-list Routines\n");
+    puts("Testing Inter-list Routines\n");
 
     p_list_1 = create_list();
     p_list_2 = create_list();
     assert(is_empty(p_list_1) && is_empty(p_list_2));
     p_merged_list = merge_lists(p_list_1, p_list_2);
-    printf("\nHERE\n");
     assert(is_empty(p_merged_list) == TRUE);
     assert(destroy_list(&p_merged_list) == SUCCESS && p_merged_list == NULL);
 
@@ -154,7 +153,7 @@ int main(void)
     show(p_list_2, "p_list_2: After merge");
 
     puts("p_list_1 and p_list_2 : After merge = before concat_list_m");
-    assert(concat_list_m(p_list_1, p_list_2) == SUCCESS);
+    assert(concat_list_m(p_list_1, &p_list_2) == SUCCESS);
     p_list_2 = NULL;
     show(p_list_1, "p_list_1: After concat_list_m");
 

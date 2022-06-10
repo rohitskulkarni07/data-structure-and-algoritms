@@ -213,10 +213,10 @@ list_t *concat_list_imm(list_t *p_list_1, list_t *p_list_2);
  * @brief Concat 2 given list by creating new list
  *
  * @param p_list_1 list 1 to be concat
- * @param p_list_2 list 2 be concat with
+ * @param p_list_2 address of list 2 be concat with
  * @return status_t success result
  */
-status_t concat_list_m(list_t *p_list_1, list_t *p_list_2);
+status_t concat_list_m(list_t *p_list_1, list_t **pp_list_2);
 
 /**
  * @brief Merge 2 sorted list

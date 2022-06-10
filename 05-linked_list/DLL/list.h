@@ -157,6 +157,15 @@ status_t remove_end(list_t *p_list);
 status_t remove_data(list_t *p_list, data_t r_data);
 
 /**
+ * @brief Remove all occurrences of given data from list
+ * 
+ * @param p_list head node of the list
+ * @param r_data data to be remove
+ * @return status_t success status
+ */
+status_t remove_all(list_t *p_list, data_t r_data);
+
+/**
  * @brief Check if list is empty or not
  *
  * @param p_list head node of the list
@@ -216,7 +225,7 @@ list_t *concat_list_imm(list_t *p_list_1, list_t *p_list_2);
  * @param p_list_2 list 2 be concat with
  * @return status_t success result
  */
-status_t concat_list_m(list_t *p_list_1, list_t *p_list_2);
+status_t concat_list_m(list_t *p_list_1, list_t **pp_list_2);
 
 /**
  * @brief Merge 2 sorted list

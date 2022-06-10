@@ -216,10 +216,15 @@ list_t *concat_list_imm(list_t *p_list_1, list_t *p_list_2)
     return (p_concat_list);
 }
 
-status_t concat_list_m(list_t *p_list_1, list_t *p_list_2)
+status_t concat_list_m(list_t *p_list_1, list_t **pp_list_2)
 {
-    if (!is_empty(p_list_2))
+    list_t *p_list_2 = *pp_list_2;
+
+    if (is_empty(p_list_2) == TRUE)
     {
+        free(p_list_2);
+        p_list_2 = NULL;
+        *pp_list_2 = NULL;
         return (SUCCESS);
     }
 
@@ -230,7 +235,7 @@ status_t concat_list_m(list_t *p_list_1, list_t *p_list_2)
 
     free(p_list_2);
     p_list_2 = NULL;
-
+    *pp_list_2 = NULL; 
     return (SUCCESS);
 }
 
