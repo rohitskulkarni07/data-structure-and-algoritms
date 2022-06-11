@@ -17,9 +17,7 @@ int main(void)
 
     p_list = create_list();
     assert(p_list);
-
     show(p_list, "\nAfter Creation: ");
-
     assert(is_empty(p_list) == TRUE);
     assert(get_length(p_list) == 0);
     assert(get_start(p_list, &data) == LIST_EMPTY);
@@ -126,7 +124,6 @@ int main(void)
     p_list_2 = create_list();
     assert(is_empty(p_list_1) && is_empty(p_list_2));
     p_merged_list = merge_lists(p_list_1, p_list_2);
-    printf("\nHERE\n");
     assert(is_empty(p_merged_list) == TRUE);
     assert(destroy_list(&p_merged_list) == SUCCESS && p_merged_list == NULL);
 
@@ -154,7 +151,7 @@ int main(void)
     show(p_list_2, "p_list_2: After merge");
 
     puts("p_list_1 and p_list_2 : After merge = before concat_list_m");
-    assert(concat_list_m(p_list_1, p_list_2) == SUCCESS);
+    assert(concat_list_m(p_list_1, &p_list_2) == SUCCESS);
     p_list_2 = NULL;
     show(p_list_1, "p_list_1: After concat_list_m");
 

@@ -265,7 +265,7 @@ list_t *merge_lists(list_t *p_list_1, list_t *p_list_2)
         {
             while (p_run_1 != p_list_1)
             {
-                assert(insert_end(p_merge_list, p_run_2->data) == SUCCESS);
+                assert(insert_end(p_merge_list, p_run_1->data) == SUCCESS);
                 p_run_1 = p_run_1->next;
             }
             break;

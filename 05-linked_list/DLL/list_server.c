@@ -39,7 +39,7 @@ status_t insert_after(list_t *p_list, data_t e_data, data_t new_data)
 {
     node_t *e_node = search_node(p_list, e_data);
 
-    if (!e_node)
+    if (e_node == NULL)
     {
         /* code */
         return (LIST_DATA_NOT_FOUND);
@@ -53,7 +53,7 @@ status_t insert_before(list_t *p_list, data_t e_data, data_t new_data)
 {
     node_t *e_node = search_node(p_list, e_data);
 
-    if (!e_node)
+    if (e_node == NULL)
     {
         /* code */
         return (LIST_DATA_NOT_FOUND);
@@ -178,11 +178,12 @@ status_t remove_all(list_t *p_list, data_t r_data)
         }
         p_run = p_run_next;
     }
+    return(SUCCESS);
 }
 
 bool is_empty(list_t *p_list)
 {
-    return (p_list->prev == p_list && p_list->next == p_list);
+    return (p_list->next == NULL && p_list->prev == NULL);
 }
 
 bool find(list_t *p_list, data_t f_data)
@@ -211,7 +212,7 @@ void show(list_t *p_list, const char *msg)
         puts(msg);
     }
     printf("[START]<-->");
-    for (p_run = p_list->next; p_run != p_list; p_run = p_run->next)
+    for (p_run = p_list->next; p_run != NULL; p_run = p_run->next)
     {
         printf("[ %d ]<-->", p_run->data);
     }
@@ -293,9 +294,9 @@ status_t concat_list_m(list_t *p_list_1, list_t **pp_list_2)
 
 list_t *merge_lists(list_t *p_list_1, list_t *p_list_2)
 {
-    list_t *p_merge_list = NULL;
     node_t *p_run_1 = NULL;
     node_t *p_run_2 = NULL;
+    list_t *p_merge_list = NULL;
 
     p_merge_list = create_list();
     p_run_1 = p_list_1->next;
@@ -317,7 +318,7 @@ list_t *merge_lists(list_t *p_list_1, list_t *p_list_2)
         {
             while (p_run_1 != NULL)
             {
-                assert(insert_end(p_merge_list, p_run_2->data) == SUCCESS);
+                assert(insert_end(p_merge_list, p_run_1->data) == SUCCESS);
                 p_run_1 = p_run_1->next;
             }
             break;
@@ -345,7 +346,7 @@ list_t *get_reversed_list(list_t *p_list) /* immutable version */
 
     p_reversed_list = create_list();
 
-    if (is_empty(p_list) == TRUE)
+    if (is_empty(p_list))
     {
         return (p_reversed_list);
     }
@@ -353,7 +354,7 @@ list_t *get_reversed_list(list_t *p_list) /* immutable version */
     p_run = p_list->next;
     while (p_run != NULL)
     {
-        assert(insert_end(p_reversed_list, p_run->data) == SUCCESS);
+        assert(insert_start(p_reversed_list, p_run->data) == SUCCESS);
         p_run = p_run->next;
     }
     return (p_reversed_list);
@@ -418,7 +419,7 @@ static void generic_insert(list_t *p_beg, list_t *p_mid, list_t *p_end)
     {
         p_beg->next = p_mid;
     }
-    if (p_end == NULL)
+    if (p_end != NULL)
     {
         p_end->prev = p_mid;
     }
@@ -477,7 +478,7 @@ static void *xcalloc(size_t nr_elements, size_t size_per_element)
     void *p = NULL;
 
     p = calloc(nr_elements, size_per_element);
-    if (!p)
+    if (p == NULL)
     {
         fprintf(stderr, "calloc : fatal :  out of virtual memory");
         exit(EXIT_FAILURE);
