@@ -187,30 +187,149 @@ void show(list_t *p_list, const char *msg)
 
 list_t *concat(list_t *p_list1, list_t *p_list2)
 {
+    list_t *p_new_list = NULL;
+    node_t *p_run = NULL;
+
+    p_new_list = create_list();
+    for (p_run = p_list1->next; p_run != NULL; p_run = p_run->next)
+    {
+        insert_end(p_new_list, p_run->data);
+    }
+    for (p_run = p_list2->next; p_run != NULL; p_run = p_run->next)
+    {
+        insert_end(p_new_list, p_run->data);
+    }
+
+    return (p_new_list);
 }
 
 list_t *merge(list_t *p_list1, list_t *p_list2)
 {
+    node_t *p_run1 = NULL;
+    node_t *p_run2 = NULL;
+    list_t *p_merged_list = NULL;
+
+    p_merged_list = create_list();
+    p_run1 = p_list1->next;
+    p_run2 = p_list2->next;
+
+    while (TRUE)
+    {
+        if (p_run1 == NULL)
+        {
+            for (; p_run2 != NULL; p_run2 = p_run2->next)
+            {
+                insert_end(p_merged_list, p_run2->data);
+            }
+            break;
+        }
+        if (p_run2 == NULL)
+        {
+            for (; p_run1 != NULL; p_run1 = p_run1->next)
+            {
+                insert_end(p_merged_list, p_run1->data);
+            }
+            break;
+        }
+
+        if (p_run1->data <= p_run2->data)
+        {
+            insert_end(p_merged_list, p_run1->data);
+            p_run1 = p_run1->next;
+        }
+        else
+        {
+            insert_end(p_merged_list, p_run2->data);
+            p_run2 = p_run2->next;
+        }
+    }
+    return (p_merged_list);
 }
 
 list_t *get_reversed_list(list_t *p_list)
 {
+    list_t *p_reversed_list = NULL;
+    node_t *p_run = NULL;
+    p_reversed_list = create_list();
+    for (p_run = p_list->next; p_run != NULL; p_run = p_run->next)
+    {
+        insert_start(p_reversed_list, p_run->data);
+    }
+    return (p_reversed_list);
 }
 
 list_t *append(list_t *p_list1, list_t *p_list2)
 {
+    node_t *p_last_node_of_list1 = NULL;
+
+    get_last_node(p_list1, &p_last_node_of_list1);
+    p_last_node_of_list1->next = p_list2->next;
+
+    free(p_list2);
+
+    return (SUCCESS);
 }
 
 list_t *reversed_list(list_t *p_list)
 {
+    node_t *p_run = NULL;
+    node_t *p_run_next = NULL;
+
+    if (p_list->next == NULL || p_list->next->next == NULL)
+    {
+        return (SUCCESS);
+    }
+
+    p_run = p_list->next->next;
+    p_list->next->next = NULL;
+    while (p_run != NULL)
+    {
+        p_run_next = p_run->next;
+        generic_insert(p_list, p_run, p_list);
+        p_run = p_run->next;
+    }
+
+    return (SUCCESS);
 }
 
-void to_array(list_t *p_list, data_t **p_array, size_t *p_size)
+void to_array(list_t *p_list, data_t **pp_array, size_t *p_size)
 {
+    data_t *p_array = NULL;
+    size_t size = 0;
+    node_t *p_run = NULL;
+    len_t len = 0;
+    int i = 0;
+
+    len = get_length(p_list);
+
+    if (!len)
+    {
+        *p_array = p_array;
+        *p_size = size;
+        return;
+    }
+
+    p_array = (data_t *)xmalloc(len * sizeof(data_t));
+
+    for (p_run = p_list->next, i = 0; p_run != NULL; p_run = p_run->next, ++i)
+    {
+        p_array[i] = p_run->data;
+    }
+    *pp_array = p_array;
+    *p_size = size;
 }
 
 list_t *to_list(data_t *p_array, size_t size)
 {
+    list_t *p_list = NULL;
+    size_t i;
+
+    p_list = create_list();
+    for (i = 0; i < size; ++i)
+    {
+        insert_end(p_list, p_array[i]);
+    }
+    return (p_list);
 }
 
 static destroy_list(list_t **pp_list)
