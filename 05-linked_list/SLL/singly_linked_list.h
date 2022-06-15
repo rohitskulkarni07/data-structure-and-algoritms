@@ -54,13 +54,13 @@ list_t *concat(list_t *p_list1, list_t *p_list2);
 list_t *merge(list_t *p_list1, list_t *p_list2);
 list_t *get_reversed_list(list_t *p_list);
 
-list_t *append(list_t *p_list1, list_t *p_list2);
-list_t *reversed_list(list_t *p_list);
+status_t append(list_t *p_list1, list_t *p_list2);
+status_t reversed_list(list_t *p_list);
 
 void to_array(list_t *p_list, data_t **p_array, size_t *p_size);
 list_t *to_list(data_t *p_array, size_t size);
 
-static destroy_list(list_t** pp_list);
+status_t destroy_list(list_t** pp_list);
 
 static void generic_insert(node_t *p_beg, node_t *p_mid, node_t *p_end);
 static void generic_delete(node_t *p_prev_node, node_t *p_delete_node);

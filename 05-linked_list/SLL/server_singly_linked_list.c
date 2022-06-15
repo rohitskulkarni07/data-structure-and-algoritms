@@ -9,7 +9,7 @@ list_t *create_list(void)
     node_t *p_head_node = NULL;
     p_head_node = (node_t *)xmalloc(sizeof(node_t));
     p_head_node->data = 0;
-    p_head_node->next;
+    p_head_node->next = NULL;
 
     return (p_head_node);
 }
@@ -24,7 +24,7 @@ status_t insert_end(list_t *p_list, data_t new_data)
 {
     node_t *p_last_node = NULL;
     get_last_node(p_list, &p_last_node);
-    generic_insert(p_list, get_node(new_data), p_last_node);
+    generic_insert(p_last_node, get_node(new_data), p_last_node->next);
     return (SUCCESS);
 }
 
@@ -60,7 +60,7 @@ status_t get_start(list_t *p_list, data_t *p_start_data)
     {
         return (LIST_EMPTY);
     }
-    p_start_data = p_list->next->data;
+    *p_start_data = p_list->next->data;
     return (SUCCESS);
 }
 
@@ -129,9 +129,9 @@ status_t remove_data(list_t *p_list, data_t r_data)
     node_t *p_data_node = NULL;
     node_t *p_data_node_prev = NULL;
     get_node_and_prev(p_list, r_data, &p_data_node, &p_data_node_prev);
-    if (is_empty(p_list) == TRUE)
+    if (p_data_node == NULL)
     {
-        return (LIST_EMPTY);
+        return (LIST_DATA_NOT_FOUND);
     }
     generic_delete(p_data_node_prev, p_data_node);
     return (SUCCESS);
@@ -182,7 +182,7 @@ void show(list_t *p_list, const char *msg)
         printf("[ %d ]->", p_run->data);
         p_run = p_run->next;
     }
-    printf("[ END ]->");
+    printf("[ END ]\n\n");
 }
 
 list_t *concat(list_t *p_list1, list_t *p_list2)
@@ -223,6 +223,7 @@ list_t *merge(list_t *p_list1, list_t *p_list2)
             }
             break;
         }
+        
         if (p_run2 == NULL)
         {
             for (; p_run1 != NULL; p_run1 = p_run1->next)
@@ -258,7 +259,7 @@ list_t *get_reversed_list(list_t *p_list)
     return (p_reversed_list);
 }
 
-list_t *append(list_t *p_list1, list_t *p_list2)
+status_t append(list_t *p_list1, list_t *p_list2)
 {
     node_t *p_last_node_of_list1 = NULL;
 
@@ -270,7 +271,7 @@ list_t *append(list_t *p_list1, list_t *p_list2)
     return (SUCCESS);
 }
 
-list_t *reversed_list(list_t *p_list)
+status_t reversed_list(list_t *p_list)
 {
     node_t *p_run = NULL;
     node_t *p_run_next = NULL;
@@ -285,8 +286,8 @@ list_t *reversed_list(list_t *p_list)
     while (p_run != NULL)
     {
         p_run_next = p_run->next;
-        generic_insert(p_list, p_run, p_list);
-        p_run = p_run->next;
+        generic_insert(p_list, p_run, p_list->next);
+        p_run = p_run_next;
     }
 
     return (SUCCESS);
@@ -304,7 +305,7 @@ void to_array(list_t *p_list, data_t **pp_array, size_t *p_size)
 
     if (!len)
     {
-        *p_array = p_array;
+        *pp_array = p_array;
         *p_size = size;
         return;
     }
@@ -332,14 +333,14 @@ list_t *to_list(data_t *p_array, size_t size)
     return (p_list);
 }
 
-static destroy_list(list_t **pp_list)
+status_t destroy_list(list_t **pp_list)
 {
-    node_t *p_list = NULL;
     node_t *p_run = NULL;
     node_t *p_run_next = NULL;
+    node_t *p_list = NULL;
 
     p_list = *pp_list;
-    for (p_run = p_list->next; p_run != NULL; p_run_next)
+    for (p_run = p_list->next; p_run != NULL; p_run = p_run_next)
     {
         p_run_next = p_run->next;
         free(p_run);
@@ -372,7 +373,7 @@ static node_t *search_node(list_t *p_list, data_t s_data)
         {
             break;
         }
-        p_run = p_run->data;
+        p_run = p_run->next;
     }
     return (p_run);
 }
@@ -382,7 +383,7 @@ static void get_last_node(list_t *p_list, node_t **pp_last_node)
     node_t *p_run = NULL;
     p_run = p_list;
 
-    while (p_run != NULL)
+    while (p_run->next != NULL)
     {
         p_run = p_run->next;
     }
@@ -395,7 +396,7 @@ static void get_last_node_and_prev(list_t *p_list, node_t **pp_node, node_t **pp
     node_t *p_run_prev = NULL;
     p_run = p_list;
     p_run_prev = NULL;
-    while (p_run != NULL)
+    while (p_run->next != NULL)
     {
         p_run_prev = p_run;
         p_run = p_run->next;
