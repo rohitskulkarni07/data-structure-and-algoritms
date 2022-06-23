@@ -16,52 +16,52 @@ int main(void)
     for (data = 0; data < 5; data++)
     {
         status = insert_start(p_list, data);
-        assert(status);
+        assert(status == SUCCESS);
     }
     show(p_list, "After insert_start:");
 
     for (data = 5; data < 10; data++)
     {
         status = insert_end(p_list, data);
-        assert(status);
+        assert(status == SUCCESS);
     }
     show(p_list, "After insert_end:");
 
     status = insert_after(p_list, 0, 100);
-    assert(status);
+    assert(status == SUCCESS);
     show(p_list, "After insert_after:");
 
     status = insert_before(p_list, 0, 200);
-    assert(status);
+    assert(status == SUCCESS);
     show(p_list, "After insert_before:");
 
     status = get_start(p_list, &data);
-    assert(status);
+    assert(status == SUCCESS);
     printf("start data=%d\n", data);
     show(p_list, "After get_start:");
 
 
     status = get_end(p_list, &data);
-    assert(status);
+    assert(status == SUCCESS);
     printf("end data=%d\n", data);
     show(p_list, "After get_end:");
 
     status = pop_start(p_list, &data);
-    assert(status);
+    assert(status == SUCCESS);
     printf("start data=%d\n", data);
     show(p_list, "After pop_start:");
 
     status = pop_end(p_list, &data);
-    assert(status);
+    assert(status == SUCCESS);
     printf("end data=%d\n", data);
     show(p_list, "After pop_end:");
 
     status = remove_start(p_list);
-    assert(status);
+    assert(status == SUCCESS);
     show(p_list, "After remove_start:");
 
     status = remove_end(p_list);
-    assert(status);
+    assert(status == SUCCESS);
     show(p_list, "After remove_end:");
 
     status = remove_data(p_list, 0);
@@ -76,7 +76,7 @@ int main(void)
     show(p_new_reversed_list, "new_reversed_list After get_reversed_lis:");
 
     status = destroy_list(&p_list);
-    assert(status);
+    assert(status == SUCCESS);
 
     list_t *p_list_1 = create_list();
     list_t *p_list_2 = create_list();
@@ -90,7 +90,7 @@ int main(void)
     {
         status = insert_start(p_list_1, data*2);
         status = insert_end(p_list_2, data*3);
-        assert(status);
+        assert(status == SUCCESS);
     }
 
     show(p_list_1, "After insert_start list 1:");
@@ -105,7 +105,7 @@ int main(void)
     for (data = 0; data < 5; data++)
     {
         status = insert_start(p_append_list, data*13);
-        assert(status);
+        assert(status == SUCCESS);
     }
     show(p_append_list, "After insert_start append list:");
 
@@ -121,7 +121,7 @@ int main(void)
     {
         status = insert_end(p_list_1, data);
         status = insert_end(p_list_2, data*2);
-        assert(status);
+        assert(status == SUCCESS);
     }
     list_t *p_new_merge_list = merge(p_list_1, p_list_2);
 

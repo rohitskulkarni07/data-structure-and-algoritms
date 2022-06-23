@@ -367,6 +367,8 @@ static void generic_delete(node_t *p_prev_node, node_t *p_delete_node)
 static node_t *search_node(list_t *p_list, data_t s_data)
 {
     node_t *p_run = NULL;
+
+    p_run = p_list->next;
     while (p_run != NULL)
     {
         if (p_run->data == s_data)
