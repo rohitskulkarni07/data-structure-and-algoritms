@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
     if (argc != 2)
     {
-        fprintf(stderr, "Usage Error:\nCorrect Useage: %s number of elements", argv[0]);
+        fprintf(stderr, "Usage Error:\nCorrect Usage: %s number of elements", argv[0]);
         exit(EXIT_FAILURE);
     }
 
