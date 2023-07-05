@@ -111,7 +111,7 @@ void quick_sort(int *arr, int p, int r)
     }
 }
 /**
- * @brief partition the array in such way it pivot should be at correct possition
+ * @brief partition the array in such way it pivot should be at correct position
  * where a[p ... i] are less than pivot and [i+1...r] are greater than pivot
  *
  * @param arr unsorted array
