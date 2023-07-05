@@ -1,8 +1,7 @@
 /**
- * @file sorting_framework.c
+ * @file quick_sort.c
  * @author rohit kulkarni
- * @brief this sorting framework just call your respective sort functions inside sort function()
- * here quick sort is used
+ * @brief quick sort algorithm generic implementation
  * @date 2022-05-09
  */
 #include <stdio.h>
